@@ -6,12 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		01BB83152D5DD5CE004CA1DA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 01BB83142D5DD5CE004CA1DA /* FirebaseAuth */; };
+		01BB83172D5DD5CE004CA1DA /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 01BB83162D5DD5CE004CA1DA /* FirebaseCore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		01BB82D72D5DCAE5004CA1DA /* InternshipTasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InternshipTasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		01BB82E92D5DCAE7004CA1DA /* Exceptions for "InternshipTasks" folder in "InternshipTasks" target */ = {
+		01BB834C2D5DDBE5004CA1DA /* Exceptions for "InternshipTasks" folder in "InternshipTasks" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -21,10 +26,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		01BB82D92D5DCAE5004CA1DA /* InternshipTasks */ = {
+		01BB83422D5DDBE5004CA1DA /* InternshipTasks */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				01BB82E92D5DCAE7004CA1DA /* Exceptions for "InternshipTasks" folder in "InternshipTasks" target */,
+				01BB834C2D5DDBE5004CA1DA /* Exceptions for "InternshipTasks" folder in "InternshipTasks" target */,
 			);
 			path = InternshipTasks;
 			sourceTree = "<group>";
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01BB83172D5DD5CE004CA1DA /* FirebaseCore in Frameworks */,
+				01BB83152D5DD5CE004CA1DA /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,7 +52,7 @@
 		01BB82CE2D5DCAE5004CA1DA = {
 			isa = PBXGroup;
 			children = (
-				01BB82D92D5DCAE5004CA1DA /* InternshipTasks */,
+				01BB83422D5DDBE5004CA1DA /* InternshipTasks */,
 				01BB82D82D5DCAE5004CA1DA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,10 +81,12 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				01BB82D92D5DCAE5004CA1DA /* InternshipTasks */,
+				01BB83422D5DDBE5004CA1DA /* InternshipTasks */,
 			);
 			name = InternshipTasks;
 			packageProductDependencies = (
+				01BB83142D5DD5CE004CA1DA /* FirebaseAuth */,
+				01BB83162D5DD5CE004CA1DA /* FirebaseCore */,
 			);
 			productName = InternshipTasks;
 			productReference = 01BB82D72D5DCAE5004CA1DA /* InternshipTasks.app */;
@@ -107,6 +116,9 @@
 			);
 			mainGroup = 01BB82CE2D5DCAE5004CA1DA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				01BB83132D5DD5CE004CA1DA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 01BB82D82D5DCAE5004CA1DA /* Products */;
 			projectDirPath = "";
@@ -335,6 +347,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		01BB83132D5DD5CE004CA1DA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		01BB83142D5DD5CE004CA1DA /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01BB83132D5DD5CE004CA1DA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		01BB83162D5DD5CE004CA1DA /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01BB83132D5DD5CE004CA1DA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 01BB82CF2D5DCAE5004CA1DA /* Project object */;
 }
