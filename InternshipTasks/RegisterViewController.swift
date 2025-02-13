@@ -15,18 +15,22 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        initializeHideKeyboardOnTap()
+        emailAddressTextField.delegate = self
+        usernameTextField.delegate = self
+        passwordTextField.delegate = self
+        confirmPasswordTextField.delegate = self
+        emailAddressTextField.tag = 1
+        usernameTextField.tag = 2
+        passwordTextField.tag = 3
+        confirmPasswordTextField.tag = 4
     }
     
     @IBAction func backButtonTapped(_ sender: UIButton) {
         dismiss(animated: true)
     }
-    
     
     @IBAction func registerButtonTapped(_ sender: UIButton) {
         guard let emailAddress = emailAddressTextField.text, !emailAddress.isEmpty,
@@ -57,7 +61,25 @@ class RegisterViewController: UIViewController {
             }
         }
     }
-    
-    
+}
 
+extension RegisterViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = self.view.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return false
+    }
+    
+    func initializeHideKeyboardOnTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
+    }
 }

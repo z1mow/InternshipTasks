@@ -16,7 +16,11 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        initializeHideKeyboardOnTap()
+        emailAddressTextField.delegate = self
+        passwordTextField.delegate = self
+        emailAddressTextField.tag = 1
+        passwordTextField.tag = 2
     }
     
     @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -49,4 +53,26 @@ class LoginViewController: UIViewController {
         }
     }
     
+}
+
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = self.view.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return false
+    }
+    
+    func initializeHideKeyboardOnTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
+    }
 }
