@@ -6,19 +6,30 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
-    let appNames: [String] = ["Pharmacy"]
+    let appNames: [String] = ["Pharmacies On Duty"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.delegate = self
         tableView.dataSource = self
-       
+        tableView.layer.borderWidth = 1
+        tableView.layer.borderColor = UIColor.systemGray5.cgColor
+    }
+    
+    @IBAction func logoutButtonTapped(_ sender: UIButton) {
+        try! Auth.auth().signOut()
+        print("User signed out")
+        if let storyboard = self.storyboard {
+            let authVC = storyboard.instantiateViewController(withIdentifier: "AuthViewController")
+            authVC.modalPresentationStyle = .fullScreen
+            self.present(authVC, animated: true, completion: nil)
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -36,9 +47,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         switch indexPath.row {
         case 0:
-            let pharmacyVC = storyboard.instantiateViewController(withIdentifier: "PharmacyViewController")
-            pharmacyVC.modalPresentationStyle = .fullScreen
-            self.present(pharmacyVC, animated: true, completion: nil)
+            let cityVC = storyboard.instantiateViewController(withIdentifier: "CitySelectionViewController")
+            cityVC.modalPresentationStyle = .fullScreen
+            self.present(cityVC, animated: true)
         default:
             break
         }
