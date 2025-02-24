@@ -20,7 +20,7 @@ class CitySelectionViewController: UIViewController, UITableViewDelegate, UITabl
         searchBar.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        filteredCities = cities.sorted()
+        filteredCities = cities
     }
     
     @IBAction func backButtonTapped(_ sender: UIButton) {

@@ -6,10 +6,15 @@
 //
 
 import UIKit
+import MapKit
 
-class PharmacyListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+class PharmacyListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var mapButton: UIButton!
+    
+    private var isShowingMap = false
     
     var selectedCity: String?
     var selectedDistrict: String?
@@ -19,22 +24,44 @@ class PharmacyListViewController: UIViewController, UITableViewDataSource, UITab
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        mapView.delegate = self
         fetchPharmacies()
+        mapView.isHidden = true
     }
     
     @IBAction func backButtonTapped(_ sender: UIButton) {
         dismiss(animated: true)
     }
     
-    private func emptyPharmacyListAlert() {
-        if pharmacies.isEmpty {
-            let emptyLabel = UILabel()
-            emptyLabel.text = "There is no pharmacy on duty in \(selectedDistrict ?? "this area")."
-            emptyLabel.textAlignment = .center
-            emptyLabel.textColor = .systemGray
-            tableView.backgroundView = emptyLabel
-        } else {
-            tableView.backgroundView = nil
+    @IBAction func mapButtonTapped(_ sender: UIButton) {
+        isShowingMap.toggle()
+        
+        UIView.animate(withDuration: 0.3) {
+            self.mapView.isHidden = !self.isShowingMap
+            self.tableView.isHidden = self.isShowingMap
+            
+            let buttonImage = self.isShowingMap ? UIImage(systemName: "list.bullet") : UIImage(systemName: "map")
+            self.mapButton.setImage(buttonImage, for: .normal)
+        }
+    }
+    
+    private func geocodeAddress(for pharmacy: Pharmacy, completion: @escaping (CLLocationCoordinate2D?) -> Void) {
+        let geocoder = CLGeocoder()
+        let fullAddress = "\(pharmacy.address), \(selectedCity ?? "")"
+        
+        geocoder.geocodeAddressString(fullAddress) { placemarks, error in
+            if let error = error {
+                print("Geocoding error: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            guard let location = placemarks?.first?.location?.coordinate else {
+                completion(nil)
+                return
+            }
+            
+            completion(location)
         }
     }
     
@@ -61,16 +88,85 @@ class PharmacyListViewController: UIViewController, UITableViewDataSource, UITab
                 let decoder = JSONDecoder()
                 let response = try decoder.decode(PharmacyResponse.self, from: data)
                 
+                print("API Response:")
+                print(String(data: data, encoding: .utf8) ?? "Invalid data")
+                
                 DispatchQueue.main.async {
                     self?.pharmacies = response.result
                     self?.tableView.reloadData()
-                    self?.emptyPharmacyListAlert()
+                    self?.updateMapAnnotations()
                 }
             } catch {
                 print("Decoding error: \(error.localizedDescription)")
             }
         }
         task.resume()
+    }
+    
+    private func updateMapAnnotations() {
+        mapView.removeAnnotations(mapView.annotations)
+        
+        let group = DispatchGroup()
+        var annotations: [MKPointAnnotation] = []
+        
+        for pharmacy in pharmacies {
+            group.enter()
+            geocodeAddress(for: pharmacy) { coordinate in
+                defer { group.leave() }
+                
+                guard let coordinate = coordinate else { return }
+                
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                annotation.title = pharmacy.name
+                annotation.subtitle = pharmacy.address
+                annotations.append(annotation)
+            }
+        }
+        
+        group.notify(queue: .main) {
+            self.mapView.addAnnotations(annotations)
+            
+            if let firstAnnotation = annotations.first {
+                let region = MKCoordinateRegion(
+                    center: firstAnnotation.coordinate,
+                    latitudinalMeters: 5000,
+                    longitudinalMeters: 5000
+                )
+                self.mapView.setRegion(region, animated: true)
+            }
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard !(annotation is MKUserLocation) else { return nil }
+        
+        let identifier = "PharmacyPin"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotationView == nil {
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
+            
+            let button = UIButton(type: .detailDisclosure)
+            annotationView?.rightCalloutAccessoryView = button
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        guard let coordinate = view.annotation?.coordinate else { return }
+        
+        let placemark = MKPlacemark(coordinate: coordinate)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = view.annotation?.title ?? "Eczane"
+        
+        mapItem.openInMaps(launchOptions: [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving
+        ])
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
