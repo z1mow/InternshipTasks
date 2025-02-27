@@ -16,7 +16,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		01BB834C2D5DDBE5004CA1DA /* Exceptions for "InternshipTasks" folder in "InternshipTasks" target */ = {
+		0176CD7A2D6DED7A00BA3F99 /* Exceptions for "InternshipTasks" folder in "InternshipTasks" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -26,10 +26,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		01BB83422D5DDBE5004CA1DA /* InternshipTasks */ = {
+		0176CD6B2D6DED7A00BA3F99 /* InternshipTasks */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				01BB834C2D5DDBE5004CA1DA /* Exceptions for "InternshipTasks" folder in "InternshipTasks" target */,
+				0176CD7A2D6DED7A00BA3F99 /* Exceptions for "InternshipTasks" folder in "InternshipTasks" target */,
 			);
 			path = InternshipTasks;
 			sourceTree = "<group>";
@@ -52,7 +52,7 @@
 		01BB82CE2D5DCAE5004CA1DA = {
 			isa = PBXGroup;
 			children = (
-				01BB83422D5DDBE5004CA1DA /* InternshipTasks */,
+				0176CD6B2D6DED7A00BA3F99 /* InternshipTasks */,
 				01BB82D82D5DCAE5004CA1DA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,7 +81,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				01BB83422D5DDBE5004CA1DA /* InternshipTasks */,
+				0176CD6B2D6DED7A00BA3F99 /* InternshipTasks */,
 			);
 			name = InternshipTasks;
 			packageProductDependencies = (

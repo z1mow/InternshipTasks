@@ -12,14 +12,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var tableView: UITableView!
     
-    let appNames: [String] = ["Pharmacies On Duty"]
+    let appNames: [String] = ["Pharmacies On Duty",
+                              "Youtube"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.layer.borderWidth = 1
-        tableView.layer.borderColor = UIColor.systemGray5.cgColor
     }
     
     @IBAction func logoutButtonTapped(_ sender: UIButton) {
@@ -50,6 +49,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             let cityVC = storyboard.instantiateViewController(withIdentifier: "CitySelectionViewController")
             cityVC.modalPresentationStyle = .fullScreen
             self.present(cityVC, animated: true)
+        case 1:
+            let youtubeVC = storyboard.instantiateViewController(withIdentifier: "YouTubeViewController")
+            youtubeVC.modalPresentationStyle = .fullScreen
+            self.present(youtubeVC, animated: true)
         default:
             break
         }
